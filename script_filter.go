@@ -1,10 +1,14 @@
 package alfred
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"fmt"
+)
 
 type ScriptFilter struct {
 	Items     []Item            `json:"items"`
 	Variables map[string]string `json:"variables,omitempty"`
+	EmptyItem Item              `json:"-"`
 }
 
 type Item struct {
@@ -69,17 +73,33 @@ func (sf *ScriptFilter) Length() int {
 	return len(sf.Items)
 }
 
+func (sf *ScriptFilter) IsEmpty() bool {
+	return sf.Length() == 0
+}
+
 func (sf *ScriptFilter) Append(items ...Item) {
 	sf.Items = append(sf.Items, items...)
 }
 
-func (sf *ScriptFilter) ToJson(emptyItem Item) string {
-	if sf.Length() == 0 {
-		sf.Append(emptyItem)
+func (sf *ScriptFilter) SetEmptyTitle(title, subtitle string) {
+	sf.EmptyItem = Item{
+		Title:    title,
+		Subtitle: subtitle,
+		Valid:    false,
 	}
+}
+
+func (sf *ScriptFilter) JsonMarshal() string {
 	bytes, err := json.Marshal(sf)
 	if err != nil {
 		panic(err)
 	}
 	return string(bytes)
+}
+
+func (sf *ScriptFilter) Output() {
+	if sf.IsEmpty() {
+		sf.Append(sf.EmptyItem)
+	}
+	fmt.Println(sf.JsonMarshal())
 }

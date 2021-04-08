@@ -15,7 +15,7 @@ func jsonCompact(s string) string {
 func TestScriptFilter_ToJson_TitleOnly(t *testing.T) {
 	sf := ScriptFilter{}
 	sf.Append(Item{Title: "TestTitle"})
-	got := sf.ToJson(Item{Title: "TestTitle"})
+	got := sf.JsonMarshal()
 	want := jsonCompact(`
 	{
 		"items": [
@@ -53,7 +53,7 @@ func TestScriptFilter_ToJson_All(t *testing.T) {
 		},
 		QuicklookURL: "http://localhost",
 	})
-	got := sf.ToJson(Item{Title: "TestTitle"})
+	got := sf.JsonMarshal()
 	want := jsonCompact(`
 	{
 		"items": [

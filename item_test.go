@@ -42,11 +42,11 @@ func TestIcon_MarshalJSON(t *testing.T) {
 
 	tests := []marshalJSONTest{
 		// Minimal
-		{in: &Icon{Path: "./icon.png"}, out: `{"path":"./icon.png"}`},
+		{in: &Icon{path: "./icon.png"}, out: `{"path":"./icon.png"}`},
 		// With type fileicon
-		{in: &Icon{Path: "./icon.png", Type: pIconType("fileicon")}, out: `{"path":"./icon.png","type":"fileicon"}`},
+		{in: &Icon{path: "./icon.png", typ: pIconType("fileicon")}, out: `{"path":"./icon.png","type":"fileicon"}`},
 		// With type filetype
-		{in: &Icon{Path: "./icon.png", Type: pIconType("filetype")}, out: `{"path":"./icon.png","type":"filetype"}`},
+		{in: &Icon{path: "./icon.png", typ: pIconType("filetype")}, out: `{"path":"./icon.png","type":"filetype"}`},
 	}
 
 	for i, test := range tests {
@@ -68,17 +68,17 @@ func TestModifier_MarshalJSON(t *testing.T) {
 
 	tests := []marshalJSONTest{
 		// Set subtitle
-		{in: &Modifier{Subtitle: ps("subtitle")}, out: `{"subtitle":"subtitle"}`},
+		{in: &Modifier{subtitle: ps("subtitle")}, out: `{"subtitle":"subtitle"}`},
 		// Set arg
-		{in: &Modifier{Arg: ps("arg")}, out: `{"arg":"arg"}`},
+		{in: &Modifier{arg: ps("arg")}, out: `{"arg":"arg"}`},
 		// Set icon
-		{in: &Modifier{Icon: &Icon{Path: "./icon.png"}}, out: `{"icon":{"path":"./icon.png"}}`},
+		{in: &Modifier{icon: &Icon{path: "./icon.png"}}, out: `{"icon":{"path":"./icon.png"}}`},
 		// Set valid true
-		{in: &Modifier{Valid: pb(true)}, out: `{"valid":true}`},
+		{in: &Modifier{valid: pb(true)}, out: `{"valid":true}`},
 		// Set valid false
-		{in: &Modifier{Valid: pb(false)}, out: `{"valid":false}`},
+		{in: &Modifier{valid: pb(false)}, out: `{"valid":false}`},
 		// Set variables
-		{in: &Modifier{Variables: map[string]string{"key": "value"}}, out: `{"variables":{"key":"value"}}`},
+		{in: &Modifier{variables: map[string]string{"key": "value"}}, out: `{"variables":{"key":"value"}}`},
 	}
 
 	for i, test := range tests {
@@ -101,15 +101,15 @@ func TestModifiers_MarshalJSON(t *testing.T) {
 
 	tests := []marshalJSONTest{
 		// Set shift
-		{in: &Modifiers{Shift: &Modifier{Subtitle: ps("shift")}}, out: `{"shift":{"subtitle":"shift"}}`},
+		{in: &Modifiers{shift: &Modifier{subtitle: ps("shift")}}, out: `{"shift":{"subtitle":"shift"}}`},
 		// Set fn
-		{in: &Modifiers{Fn: &Modifier{Subtitle: ps("fn")}}, out: `{"fn":{"subtitle":"fn"}}`},
+		{in: &Modifiers{fn: &Modifier{subtitle: ps("fn")}}, out: `{"fn":{"subtitle":"fn"}}`},
 		// Set ctrl
-		{in: &Modifiers{Ctrl: &Modifier{Subtitle: ps("ctrl")}}, out: `{"ctrl":{"subtitle":"ctrl"}}`},
+		{in: &Modifiers{ctrl: &Modifier{subtitle: ps("ctrl")}}, out: `{"ctrl":{"subtitle":"ctrl"}}`},
 		// Set alt
-		{in: &Modifiers{Alt: &Modifier{Subtitle: ps("alt")}}, out: `{"alt":{"subtitle":"alt"}}`},
+		{in: &Modifiers{alt: &Modifier{subtitle: ps("alt")}}, out: `{"alt":{"subtitle":"alt"}}`},
 		// Set cmd
-		{in: &Modifiers{Cmd: &Modifier{Subtitle: ps("cmd")}}, out: `{"cmd":{"subtitle":"cmd"}}`},
+		{in: &Modifiers{cmd: &Modifier{subtitle: ps("cmd")}}, out: `{"cmd":{"subtitle":"cmd"}}`},
 	}
 
 	for i, test := range tests {
@@ -131,11 +131,11 @@ func TestText_MarshalJSON(t *testing.T) {
 
 	tests := []marshalJSONTest{
 		// Set all
-		{in: &Text{Copy: ps("copy"), LargeType: ps("large")}, out: `{"copy":"copy","largetype":"large"}`},
+		{in: &Text{copy: ps("copy"), largeType: ps("large")}, out: `{"copy":"copy","largetype":"large"}`},
 		// Set copy
-		{in: &Text{Copy: ps("copy")}, out: `{"copy":"copy"}`},
+		{in: &Text{copy: ps("copy")}, out: `{"copy":"copy"}`},
 		// Set largeType
-		{in: &Text{LargeType: ps("large")}, out: `{"largetype":"large"}`},
+		{in: &Text{largeType: ps("large")}, out: `{"largetype":"large"}`},
 	}
 
 	for i, test := range tests {
@@ -164,7 +164,7 @@ func TestItem_MarshalJSON(t *testing.T) {
 		// With arg
 		{in: &Item{title: "title", arg: ps("arg")}, out: `{"title":"title","arg":"arg"}`},
 		// With icon
-		{in: &Item{title: "title", icon: &Icon{Path: "./icon.png"}}, out: `{"title":"title","icon":{"path":"./icon.png"}}`},
+		{in: &Item{title: "title", icon: &Icon{path: "./icon.png"}}, out: `{"title":"title","icon":{"path":"./icon.png"}}`},
 		// With valid true
 		{in: &Item{title: "title", valid: pb(true)}, out: `{"title":"title","valid":true}`},
 		// With valid false
@@ -180,10 +180,10 @@ func TestItem_MarshalJSON(t *testing.T) {
 		// With typ file:skipcheck
 		{in: &Item{title: "title", typ: pItemType("file:skipcheck")}, out: `{"title":"title","type":"file:skipcheck"}`},
 		// With mods
-		{in: &Item{title: "title", mods: &Modifiers{Shift: &Modifier{Subtitle: ps("subtitle")}}},
+		{in: &Item{title: "title", mods: &Modifiers{shift: &Modifier{subtitle: ps("subtitle")}}},
 			out: `{"title":"title","mods":{"shift":{"subtitle":"subtitle"}}}`},
 		// With text
-		{in: &Item{title: "title", text: &Text{Copy: ps("copy")}},
+		{in: &Item{title: "title", text: &Text{copy: ps("copy")}},
 			out: `{"title":"title","text":{"copy":"copy"}}`},
 		// With quicklookURL
 		{in: &Item{title: "title", quicklookURL: ps("url")}, out: `{"title":"title","quicklookurl":"url"}`},

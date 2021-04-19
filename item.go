@@ -1,6 +1,8 @@
 package alfred
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 type IconType string
 
@@ -10,15 +12,36 @@ const (
 )
 
 type Icon struct {
-	Path string    `json:"path"`
-	Type *IconType `json:"type,omitempty"`
+	path string
+	typ  *IconType
 }
 
 func NewIcon(path string, typ IconType) *Icon {
 	return &Icon{
-		Path: path,
-		Type: &typ,
+		path: path,
+		typ:  &typ,
 	}
+}
+
+func (i *Icon) Path(path string) *Icon {
+	i.path = path
+	return i
+}
+
+func (i *Icon) Type(typ IconType) *Icon {
+	i.typ = &typ
+	return i
+}
+
+func (i *Icon) MarshalJSON() ([]byte, error) {
+	v := &struct {
+		Path string    `json:"path"`
+		Type *IconType `json:"type,omitempty"`
+	}{
+		Path: i.path,
+		Type: i.typ,
+	}
+	return json.Marshal(v)
 }
 
 type ItemType string
@@ -31,25 +54,130 @@ const (
 
 type Modifier struct {
 	// TODO: require setter?
-	Subtitle  *string           `json:"subtitle,omitempty"`
-	Arg       *string           `json:"arg,omitempty"`
-	Icon      *Icon             `json:"icon,omitempty"`
-	Valid     *bool             `json:"valid,omitempty"`
+	subtitle *string
+	arg      *string
+	icon     *Icon
+	valid    *bool
 	// TODO: change type to interface{}?
-	Variables map[string]string `json:"variables,omitempty"`
+	variables map[string]string
+}
+
+func (m *Modifier) Subtitle(subtitle string) *Modifier {
+	m.subtitle = &subtitle
+	return m
+}
+
+func (m *Modifier) Arg(arg string) *Modifier {
+	m.arg = &arg
+	return m
+}
+
+func (m *Modifier) Icon(icon *Icon) *Modifier {
+	m.icon = icon
+	return m
+}
+
+func (m *Modifier) Valid(valid bool) *Modifier {
+	m.valid = &valid
+	return m
+}
+
+func (m *Modifier) Variables(variables map[string]string) *Modifier {
+	m.variables = variables
+	return m
+}
+
+func (m *Modifier) MarshalJSON() ([]byte, error) {
+	v := &struct {
+		Subtitle  *string           `json:"subtitle,omitempty"`
+		Arg       *string           `json:"arg,omitempty"`
+		Icon      *Icon             `json:"icon,omitempty"`
+		Valid     *bool             `json:"valid,omitempty"`
+		Variables map[string]string `json:"variables,omitempty"`
+	}{
+		Subtitle:  m.subtitle,
+		Arg:       m.arg,
+		Icon:      m.icon,
+		Valid:     m.valid,
+		Variables: m.variables,
+	}
+	return json.Marshal(v)
 }
 
 type Modifiers struct {
-	Shift *Modifier `json:"shift,omitempty"`
-	Fn    *Modifier `json:"fn,omitempty"`
-	Ctrl  *Modifier `json:"ctrl,omitempty"`
-	Alt   *Modifier `json:"alt,omitempty"`
-	Cmd   *Modifier `json:"cmd,omitempty"`
+	shift *Modifier
+	fn    *Modifier
+	ctrl  *Modifier
+	alt   *Modifier
+	cmd   *Modifier
+}
+
+func (m *Modifiers) Shift(modifier *Modifier) *Modifiers {
+	m.shift = modifier
+	return m
+}
+
+func (m *Modifiers) Fn(modifier *Modifier) *Modifiers {
+	m.fn = modifier
+	return m
+}
+
+func (m *Modifiers) Ctrl(modifier *Modifier) *Modifiers {
+	m.ctrl = modifier
+	return m
+}
+
+func (m *Modifiers) Alt(modifier *Modifier) *Modifiers {
+	m.alt = modifier
+	return m
+}
+
+func (m *Modifiers) Cmd(modifier *Modifier) *Modifiers {
+	m.cmd = modifier
+	return m
+}
+
+func (m *Modifiers) MarshalJSON() ([]byte, error) {
+	v := &struct {
+		Shift *Modifier `json:"shift,omitempty"`
+		Fn    *Modifier `json:"fn,omitempty"`
+		Ctrl  *Modifier `json:"ctrl,omitempty"`
+		Alt   *Modifier `json:"alt,omitempty"`
+		Cmd   *Modifier `json:"cmd,omitempty"`
+	}{
+		Shift: m.shift,
+		Fn:    m.fn,
+		Ctrl:  m.ctrl,
+		Alt:   m.alt,
+		Cmd:   m.cmd,
+	}
+	return json.Marshal(v)
 }
 
 type Text struct {
-	Copy      *string `json:"copy,omitempty"`
-	LargeType *string `json:"largetype,omitempty"`
+	copy      *string
+	largeType *string
+}
+
+func (t *Text) CopyText(text string) *Text {
+	t.copy = &text
+	return t
+}
+
+func (t *Text) LargeText(text string) *Text {
+	t.largeType = &text
+	return t
+}
+
+func (t *Text) MarshalJSON() ([]byte, error) {
+	v := struct {
+		Copy      *string `json:"copy,omitempty"`
+		LargeType *string `json:"largetype,omitempty"`
+	}{
+		Copy:      t.copy,
+		LargeType: t.largeType,
+	}
+	return json.Marshal(v)
 }
 
 type Item struct {
@@ -130,58 +258,53 @@ func (i *Item) Mods(mods Modifiers) *Item {
 	return i
 }
 
-func (i *Item) ModShift(mod Modifier) *Item {
+func (i *Item) ModShift(mod *Modifier) *Item {
 	if i.mods == nil {
-		i.mods = &Modifiers{Shift: &mod}
-	} else {
-		i.mods.Shift = &mod
+		i.mods = new(Modifiers)
 	}
+	i.mods.Shift(mod)
 	return i
 }
 
-func (i *Item) ModFn(mod Modifier) *Item {
+func (i *Item) ModFn(mod *Modifier) *Item {
 	if i.mods == nil {
-		i.mods = &Modifiers{Fn: &mod}
-	} else {
-		i.mods.Shift = &mod
+		i.mods = new(Modifiers)
 	}
+	i.mods.Fn(mod)
 	return i
 }
 
-func (i *Item) ModCtrl(mod Modifier) *Item {
+func (i *Item) ModCtrl(mod *Modifier) *Item {
 	if i.mods == nil {
-		i.mods = &Modifiers{Ctrl: &mod}
-	} else {
-		i.mods.Shift = &mod
+		i.mods = new(Modifiers)
 	}
+	i.mods.Ctrl(mod)
 	return i
 }
 
-func (i *Item) ModAlt(mod Modifier) *Item {
+func (i *Item) ModAlt(mod *Modifier) *Item {
 	if i.mods == nil {
-		i.mods = &Modifiers{Alt: &mod}
-	} else {
-		i.mods.Shift = &mod
+		i.mods = new(Modifiers)
 	}
+	i.mods.Alt(mod)
 	return i
 }
 
-func (i *Item) ModCmd(mod Modifier) *Item {
+func (i *Item) ModCmd(mod *Modifier) *Item {
 	if i.mods == nil {
-		i.mods = &Modifiers{Cmd: &mod}
-	} else {
-		i.mods.Shift = &mod
+		i.mods = new(Modifiers)
 	}
+	i.mods.Cmd(mod)
 	return i
 }
 
 func (i *Item) CopyText(text string) *Item {
 	if i.text == nil {
 		i.text = &Text{
-			Copy: &text,
+			copy: &text,
 		}
 	} else {
-		i.text.Copy = &text
+		i.text.copy = &text
 	}
 	return i
 }
@@ -189,10 +312,10 @@ func (i *Item) CopyText(text string) *Item {
 func (i *Item) LargeText(text string) *Item {
 	if i.text == nil {
 		i.text = &Text{
-			LargeType: &text,
+			largeType: &text,
 		}
 	} else {
-		i.text.LargeType = &text
+		i.text.largeType = &text
 	}
 	return i
 }
@@ -206,23 +329,21 @@ func (i *Item) QuicklookURL(url string) *Item {
 	return i
 }
 
-type ItemJSON struct {
-	UID          *string    `json:"uid,omitempty"`
-	Title        string     `json:"title"`
-	Subtitle     *string    `json:"subtitle,omitempty"`
-	Arg          *string    `json:"arg,omitempty"`
-	Icon         *Icon      `json:"icon,omitempty"`
-	Valid        *bool      `json:"valid,omitempty"`
-	Match        *string    `json:"match,omitempty"`
-	Autocomplete *string    `json:"autocomplete,omitempty"`
-	Type         *ItemType  `json:"type,omitempty"`
-	Mods         *Modifiers `json:"mods,omitempty"`
-	Text         *Text      `json:"text,omitempty"`
-	QuicklookURL *string    `json:"quicklookurl,omitempty"`
-}
-
 func (i *Item) MarshalJSON() ([]byte, error) {
-	v := &ItemJSON{
+	v := &struct {
+		UID          *string    `json:"uid,omitempty"`
+		Title        string     `json:"title"`
+		Subtitle     *string    `json:"subtitle,omitempty"`
+		Arg          *string    `json:"arg,omitempty"`
+		Icon         *Icon      `json:"icon,omitempty"`
+		Valid        *bool      `json:"valid,omitempty"`
+		Match        *string    `json:"match,omitempty"`
+		Autocomplete *string    `json:"autocomplete,omitempty"`
+		Type         *ItemType  `json:"type,omitempty"`
+		Mods         *Modifiers `json:"mods,omitempty"`
+		Text         *Text      `json:"text,omitempty"`
+		QuicklookURL *string    `json:"quicklookurl,omitempty"`
+	}{
 		UID:          i.uid,
 		Title:        i.title,
 		Subtitle:     i.subtitle,

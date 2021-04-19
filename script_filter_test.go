@@ -34,7 +34,7 @@ func TestScriptFilter_ToJson_All(t *testing.T) {
 		Uid("uid01").
 		Subtitle("TestSubtitle").
 		Arg("OutputArg").
-		Icon(NewIcon("~/icon.png", IconTypeFileIcon)).
+		Icon(NewIconWithType("~/icon.png", IconTypeFileIcon)).
 		Valid(true).
 		Match("TestMatchTitle").
 		Autocomplete("ac").
@@ -43,7 +43,7 @@ func TestScriptFilter_ToJson_All(t *testing.T) {
 			valid:     pb(true),
 			arg:       ps("ModOutputArg"),
 			subtitle:  ps("ModSubtitle"),
-			icon:      NewIcon("public.png", IconTypeFileType),
+			icon:      NewIconWithType("public.png", IconTypeFileType),
 			variables: map[string]string{"key": "value"},
 		}).
 		Text("Text").

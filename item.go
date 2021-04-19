@@ -16,7 +16,13 @@ type Icon struct {
 	typ  *IconType
 }
 
-func NewIcon(path string, typ IconType) *Icon {
+func NewIcon(path string) *Icon {
+	return &Icon{
+		path: path,
+	}
+}
+
+func NewIconWithType(path string, typ IconType) *Icon {
 	return &Icon{
 		path: path,
 		typ:  &typ,
@@ -53,13 +59,16 @@ const (
 )
 
 type Modifier struct {
-	// TODO: require setter?
 	subtitle *string
 	arg      *string
 	icon     *Icon
 	valid    *bool
 	// TODO: change type to interface{}?
 	variables map[string]string
+}
+
+func NewModifier() *Modifier {
+	return new(Modifier)
 }
 
 func (m *Modifier) Subtitle(subtitle string) *Modifier {
@@ -112,6 +121,10 @@ type Modifiers struct {
 	cmd   *Modifier
 }
 
+func NewModifiers() *Modifiers {
+	return new(Modifiers)
+}
+
 func (m *Modifiers) Shift(modifier *Modifier) *Modifiers {
 	m.shift = modifier
 	return m
@@ -157,6 +170,10 @@ func (m *Modifiers) MarshalJSON() ([]byte, error) {
 type Text struct {
 	copy      *string
 	largeType *string
+}
+
+func NewText() *Text {
+	return new(Text)
 }
 
 func (t *Text) CopyText(text string) *Text {

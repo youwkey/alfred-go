@@ -270,8 +270,8 @@ func (i *Item) Type(typ ItemType) *Item {
 	return i
 }
 
-func (i *Item) Mods(mods Modifiers) *Item {
-	i.mods = &mods
+func (i *Item) Mods(mods *Modifiers) *Item {
+	i.mods = mods
 	return i
 }
 

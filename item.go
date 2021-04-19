@@ -317,23 +317,17 @@ func (i *Item) ModCmd(mod *Modifier) *Item {
 
 func (i *Item) CopyText(text string) *Item {
 	if i.text == nil {
-		i.text = &Text{
-			copy: &text,
-		}
-	} else {
-		i.text.copy = &text
+		i.text = new(Text)
 	}
+	i.text.CopyText(text)
 	return i
 }
 
 func (i *Item) LargeText(text string) *Item {
 	if i.text == nil {
-		i.text = &Text{
-			largeType: &text,
-		}
-	} else {
-		i.text.largeType = &text
+		i.text = new(Text)
 	}
+	i.text.LargeText(text)
 	return i
 }
 

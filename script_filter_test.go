@@ -39,12 +39,12 @@ func TestScriptFilter_ToJson_All(t *testing.T) {
 		Match("TestMatchTitle").
 		Autocomplete("ac").
 		Type(ItemTypeDefault).
-		ModShift(Modifier{
-			Valid:     pb(true),
-			Arg:       ps("ModOutputArg"),
-			Subtitle:  ps("ModSubtitle"),
-			Icon:      NewIcon("public.png", IconTypeFileType),
-			Variables: map[string]string{"key": "value"},
+		ModShift(&Modifier{
+			valid:     pb(true),
+			arg:       ps("ModOutputArg"),
+			subtitle:  ps("ModSubtitle"),
+			icon:      NewIcon("public.png", IconTypeFileType),
+			variables: map[string]string{"key": "value"},
 		}).
 		Text("Text").
 		QuicklookURL("http://localhost"),

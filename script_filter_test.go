@@ -6,16 +6,16 @@ import (
 	"testing"
 )
 
-func jsonCompact(s string) string {
+func jsonCompact(s string) []byte {
 	var expected bytes.Buffer
 	_ = json.Compact(&expected, []byte(s))
-	return expected.String()
+	return expected.Bytes()
 }
 
 func TestScriptFilter_ToJson_TitleOnly(t *testing.T) {
-	sf := ScriptFilter{}
+	sf := &ScriptFilter{}
 	sf.items.Append(NewItem("TestTitle"))
-	got := sf.JsonMarshal()
+	got, _ := json.Marshal(sf)
 	want := jsonCompact(`
 	{
 		"items": [
@@ -23,13 +23,13 @@ func TestScriptFilter_ToJson_TitleOnly(t *testing.T) {
 		]
 	}`)
 
-	if got != want {
-		t.Errorf("got %v, want %v", got, want)
+	if !bytes.Equal(got, want) {
+		t.Errorf("got %v, want %v", string(got), string(want))
 	}
 }
 
 func TestScriptFilter_ToJson_All(t *testing.T) {
-	sf := ScriptFilter{}
+	sf := &ScriptFilter{}
 	sf.items.Append(NewItem("TestTitle").
 		Uid("uid01").
 		Subtitle("TestSubtitle").
@@ -49,7 +49,7 @@ func TestScriptFilter_ToJson_All(t *testing.T) {
 		Text("Text").
 		QuicklookURL("http://localhost"),
 	)
-	got := sf.JsonMarshal()
+	got, _ := json.Marshal(sf)
 	want := jsonCompact(`
 	{
 		"items": [
@@ -89,7 +89,7 @@ func TestScriptFilter_ToJson_All(t *testing.T) {
 		]
 	}
 	`)
-	if got != want {
-		t.Errorf("got %v, want %v", got, want)
+	if !bytes.Equal(got, want) {
+		t.Errorf("got %v, want %v", string(got), string(want))
 	}
 }

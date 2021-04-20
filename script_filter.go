@@ -2,7 +2,7 @@ package alfred
 
 import (
 	"encoding/json"
-	"fmt"
+	"os"
 )
 
 type ScriptFilter struct {
@@ -28,14 +28,14 @@ func (sf *ScriptFilter) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v)
 }
 
-func (sf *ScriptFilter) JsonMarshal() string {
+func (sf *ScriptFilter) Output() error {
 	bytes, err := json.Marshal(sf)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	return string(bytes)
-}
-
-func (sf *ScriptFilter) Output() {
-	fmt.Println(sf.JsonMarshal())
+	_, err = os.Stdout.Write(bytes)
+	if err != nil {
+		return err
+	}
+	return nil
 }

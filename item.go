@@ -63,7 +63,6 @@ type Modifier struct {
 	arg      *string
 	icon     *Icon
 	valid    *bool
-	// TODO: change type to interface{}?
 	variables map[string]string
 }
 

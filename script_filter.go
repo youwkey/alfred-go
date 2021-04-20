@@ -6,20 +6,26 @@ import (
 )
 
 type ScriptFilter struct {
-	Items     []*Item           `json:"items"`
-	Variables map[string]string `json:"variables,omitempty"`
+	items     Items
+	variables map[string]string
 }
 
-func (sf *ScriptFilter) Length() int {
-	return len(sf.Items)
+func NewScriptFilter() *ScriptFilter {
+	return &ScriptFilter{
+		items:     make(Items, 0),
+		variables: make(map[string]string),
+	}
 }
 
-func (sf *ScriptFilter) IsEmpty() bool {
-	return sf.Length() == 0
-}
-
-func (sf *ScriptFilter) Append(items ...*Item) {
-	sf.Items = append(sf.Items, items...)
+func (sf *ScriptFilter) MarshalJSON() ([]byte, error) {
+	v := &struct {
+		Items     Items             `json:"items"`
+		Variables map[string]string `json:"variables,omitempty"`
+	}{
+		Items:     sf.items,
+		Variables: sf.variables,
+	}
+	return json.Marshal(v)
 }
 
 func (sf *ScriptFilter) JsonMarshal() string {

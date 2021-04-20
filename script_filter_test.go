@@ -14,7 +14,7 @@ func jsonCompact(s string) string {
 
 func TestScriptFilter_ToJson_TitleOnly(t *testing.T) {
 	sf := ScriptFilter{}
-	sf.Append(NewItem("TestTitle"))
+	sf.items.Append(NewItem("TestTitle"))
 	got := sf.JsonMarshal()
 	want := jsonCompact(`
 	{
@@ -30,7 +30,7 @@ func TestScriptFilter_ToJson_TitleOnly(t *testing.T) {
 
 func TestScriptFilter_ToJson_All(t *testing.T) {
 	sf := ScriptFilter{}
-	sf.Append(NewItem("TestTitle").
+	sf.items.Append(NewItem("TestTitle").
 		Uid("uid01").
 		Subtitle("TestSubtitle").
 		Arg("OutputArg").

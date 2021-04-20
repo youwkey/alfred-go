@@ -14,7 +14,7 @@ func jsonCompact(s string) string {
 
 func TestScriptFilter_ToJson_TitleOnly(t *testing.T) {
 	sf := ScriptFilter{}
-	sf.Append(Item{Title: "TestTitle"})
+	sf.Append(NewItem("TestTitle"))
 	got := sf.JsonMarshal()
 	want := jsonCompact(`
 	{
@@ -30,29 +30,25 @@ func TestScriptFilter_ToJson_TitleOnly(t *testing.T) {
 
 func TestScriptFilter_ToJson_All(t *testing.T) {
 	sf := ScriptFilter{}
-	sf.Append(Item{
-		Uid:          "uid01",
-		Title:        "TestTitle",
-		Subtitle:     "TestSubtitle",
-		Arg:          "OutputArg",
-		Icon:         &Icon{Type: FileIcon, Path: "~/icon.png"},
-		Valid:        true,
-		Match:        "TestMatchTitle",
-		Autocomplete: "ac",
-		Type:         Default,
-		Mods: map[ModKey]Mod{Shift: {
-			Valid:     true,
-			Arg:       "ModOutputArg",
-			Subtitle:  "ModSubtitle",
-			Icon:      &Icon{Type: FileType, Path: "public.png"},
-			Variables: map[string]string{"key": "value"},
-		}},
-		Text: &Text{
-			Copy:      "CopyText",
-			LargeType: "LargeText",
-		},
-		QuicklookURL: "http://localhost",
-	})
+	sf.Append(NewItem("TestTitle").
+		Uid("uid01").
+		Subtitle("TestSubtitle").
+		Arg("OutputArg").
+		Icon(NewIconWithType("~/icon.png", IconTypeFileIcon)).
+		Valid(true).
+		Match("TestMatchTitle").
+		Autocomplete("ac").
+		Type(ItemTypeDefault).
+		ModShift(&Modifier{
+			valid:     pb(true),
+			arg:       ps("ModOutputArg"),
+			subtitle:  ps("ModSubtitle"),
+			icon:      NewIconWithType("public.png", IconTypeFileType),
+			variables: map[string]string{"key": "value"},
+		}).
+		Text("Text").
+		QuicklookURL("http://localhost"),
+	)
 	got := sf.JsonMarshal()
 	want := jsonCompact(`
 	{
@@ -63,8 +59,8 @@ func TestScriptFilter_ToJson_All(t *testing.T) {
 				"subtitle": "TestSubtitle",
 				"arg": "OutputArg",
 				"icon": {
-					"type": "fileicon",
-					"path": "~/icon.png"
+					"path": "~/icon.png",
+					"type": "fileicon"
 				},
 				"valid": true,
 				"match": "TestMatchTitle",
@@ -72,21 +68,21 @@ func TestScriptFilter_ToJson_All(t *testing.T) {
 				"type": "default",
 				"mods": {
 					"shift": {
-						"valid": true,
-						"arg": "ModOutputArg",
 						"subtitle": "ModSubtitle",
+						"arg": "ModOutputArg",
 						"icon": {
-							"type": "filetype",
-							"path": "public.png"
+							"path": "public.png",
+							"type": "filetype"
 						},
+						"valid": true,
 						"variables": {
 							"key": "value"
 						}
 					}
 				},
 				"text": {
-					"copy": "CopyText",
-					"largetype": "LargeText"
+					"copy": "Text",
+					"largetype": "Text"
 				},
 				"quicklookurl": "http://localhost"
 			}

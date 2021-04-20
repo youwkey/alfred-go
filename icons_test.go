@@ -164,9 +164,9 @@ func TestIcons(t *testing.T) {
 	}
 
 	for _, icon := range icons {
-		t.Run(icon.Path, func(t *testing.T) {
-			if _, err := os.Stat(icon.Path); err != nil {
-				t.Errorf("icon %v not exists", icon.Path)
+		t.Run(icon.path, func(t *testing.T) {
+			if _, err := os.Stat(icon.path); err != nil {
+				t.Errorf("icon %v not exists", icon.path)
 			}
 		})
 	}

@@ -17,6 +17,16 @@ func NewScriptFilter() *ScriptFilter {
 	}
 }
 
+func (sf *ScriptFilter) AppendItem(items ...*Item) *ScriptFilter {
+	sf.items.Append(items...)
+	return sf
+}
+
+func (sf *ScriptFilter) Variables(v map[string]string) *ScriptFilter {
+	sf.variables = v
+	return sf
+}
+
 func (sf *ScriptFilter) MarshalJSON() ([]byte, error) {
 	v := &struct {
 		Items     Items             `json:"items"`

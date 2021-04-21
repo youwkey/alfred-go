@@ -2,34 +2,50 @@ package alfred
 
 import (
 	"encoding/json"
-	"fmt"
+	"os"
 )
 
 type ScriptFilter struct {
-	Items     []*Item           `json:"items"`
-	Variables map[string]string `json:"variables,omitempty"`
+	items     Items
+	variables map[string]string
 }
 
-func (sf *ScriptFilter) Length() int {
-	return len(sf.Items)
+func NewScriptFilter() *ScriptFilter {
+	return &ScriptFilter{
+		items:     make(Items, 0),
+		variables: make(map[string]string),
+	}
 }
 
-func (sf *ScriptFilter) IsEmpty() bool {
-	return sf.Length() == 0
+func (sf *ScriptFilter) AppendItem(items ...*Item) *ScriptFilter {
+	sf.items.Append(items...)
+	return sf
 }
 
-func (sf *ScriptFilter) Append(items ...*Item) {
-	sf.Items = append(sf.Items, items...)
+func (sf *ScriptFilter) Variables(v map[string]string) *ScriptFilter {
+	sf.variables = v
+	return sf
 }
 
-func (sf *ScriptFilter) JsonMarshal() string {
+func (sf *ScriptFilter) MarshalJSON() ([]byte, error) {
+	v := &struct {
+		Items     Items             `json:"items"`
+		Variables map[string]string `json:"variables,omitempty"`
+	}{
+		Items:     sf.items,
+		Variables: sf.variables,
+	}
+	return json.Marshal(v)
+}
+
+func (sf *ScriptFilter) Output() error {
 	bytes, err := json.Marshal(sf)
 	if err != nil {
-		panic(err)
+		return err
 	}
-	return string(bytes)
-}
-
-func (sf *ScriptFilter) Output() {
-	fmt.Println(sf.JsonMarshal())
+	_, err = os.Stdout.Write(bytes)
+	if err != nil {
+		return err
+	}
+	return nil
 }

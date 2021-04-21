@@ -43,7 +43,19 @@ func (sf *ScriptFilter) Output() error {
 	if err != nil {
 		return err
 	}
-	_, err = os.Stdout.Write(bytes)
+	return sf.output(bytes)
+}
+
+func (sf *ScriptFilter) OutputIndent(prefix, indent string) error {
+	bytes, err := json.MarshalIndent(sf, prefix, indent)
+	if err != nil {
+		return err
+	}
+	return sf.output(bytes)
+}
+
+func (sf *ScriptFilter) output(bytes []byte) error {
+	_, err := os.Stdout.Write(bytes)
 	if err != nil {
 		return err
 	}

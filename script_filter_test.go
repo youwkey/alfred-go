@@ -2,94 +2,50 @@ package alfred
 
 import (
 	"bytes"
-	"encoding/json"
+	"fmt"
 	"testing"
 )
 
-func jsonCompact(s string) string {
-	var expected bytes.Buffer
-	_ = json.Compact(&expected, []byte(s))
-	return expected.String()
-}
+func TestScriptFilter_MarshalJSON(t *testing.T) {
+	t.Parallel()
 
-func TestScriptFilter_ToJson_TitleOnly(t *testing.T) {
-	sf := ScriptFilter{}
-	sf.Append(NewItem("TestTitle"))
-	got := sf.JsonMarshal()
-	want := jsonCompact(`
-	{
-		"items": [
-			{ "title": "TestTitle" }
-		]
-	}`)
-
-	if got != want {
-		t.Errorf("got %v, want %v", got, want)
+	type Test struct {
+		in1 *ScriptFilter
+		in2 *ScriptFilter
+		out []byte
 	}
-}
 
-func TestScriptFilter_ToJson_All(t *testing.T) {
-	sf := ScriptFilter{}
-	sf.Append(NewItem("TestTitle").
-		Uid("uid01").
-		Subtitle("TestSubtitle").
-		Arg("OutputArg").
-		Icon(NewIconWithType("~/icon.png", IconTypeFileIcon)).
-		Valid(true).
-		Match("TestMatchTitle").
-		Autocomplete("ac").
-		Type(ItemTypeDefault).
-		ModShift(&Modifier{
-			valid:     pb(true),
-			arg:       ps("ModOutputArg"),
-			subtitle:  ps("ModSubtitle"),
-			icon:      NewIconWithType("public.png", IconTypeFileType),
-			variables: map[string]string{"key": "value"},
-		}).
-		Text("Text").
-		QuicklookURL("http://localhost"),
-	)
-	got := sf.JsonMarshal()
-	want := jsonCompact(`
-	{
-		"items": [
-			{
-				"uid": "uid01",
-				"title": "TestTitle",
-				"subtitle": "TestSubtitle",
-				"arg": "OutputArg",
-				"icon": {
-					"path": "~/icon.png",
-					"type": "fileicon"
-				},
-				"valid": true,
-				"match": "TestMatchTitle",
-				"autocomplete": "ac",
-				"type": "default",
-				"mods": {
-					"shift": {
-						"subtitle": "ModSubtitle",
-						"arg": "ModOutputArg",
-						"icon": {
-							"path": "public.png",
-							"type": "filetype"
-						},
-						"valid": true,
-						"variables": {
-							"key": "value"
-						}
-					}
-				},
-				"text": {
-					"copy": "Text",
-					"largetype": "Text"
-				},
-				"quicklookurl": "http://localhost"
+	tests := []Test {
+		// Minimal
+		{ in1: &ScriptFilter{items: Items{}}, in2: NewScriptFilter(), out: []byte(`{"items":[]}`) },
+		// With item
+		{ in1: &ScriptFilter{items: Items{&Item{title: "title"}}},
+			in2: NewScriptFilter().AppendItem(NewItem("title")),
+			out: []byte(`{"items":[{"title":"title"}]}`) },
+		// With variables
+		{ in1: &ScriptFilter{items: Items{}, variables: map[string]string{"key": "value"}},
+			in2: NewScriptFilter().Variables(map[string]string{"key": "value"}),
+			out: []byte(`{"items":[],"variables":{"key":"value"}}`)},
+	}
+
+	for i, test := range tests {
+		i, test := i, test
+		t.Run(fmt.Sprintf("#%d:MarshalJSON", i), func(t *testing.T) {
+			t.Parallel()
+			in1, err := test.in1.MarshalJSON()
+			if err != nil {
+				t.Errorf("#%d: marshal error: %v", i, err)
 			}
-		]
-	}
-	`)
-	if got != want {
-		t.Errorf("got %v, want %v", got, want)
+			if !bytes.Equal(in1, test.out) {
+				t.Errorf("#%d: got: %s want: %s", i,  string(in1), string(test.out))
+			}
+			in2, err := test.in2.MarshalJSON()
+			if err != nil {
+				t.Errorf("#%d: marshal error: %v", i, err)
+			}
+			if !bytes.Equal(in2, test.out) {
+				t.Errorf("#%d: got: %s want: %s", i, string(in2), string(test.out))
+			}
+		})
 	}
 }

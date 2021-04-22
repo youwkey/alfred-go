@@ -8,7 +8,8 @@ func ExampleScriptFilter_Output() {
 	item1 := alfred.NewItem("Title1").Subtitle("Sub1").Arg("Arg1")
 	item2 := alfred.NewItem("Title2").Subtitle("Sub2").Arg("Arg2")
 
-	sf := alfred.NewScriptFilter().AppendItem(item1, item2)
+	sf := alfred.NewScriptFilter()
+	sf.Items().Append(item1, item2)
 
 	_ = sf.Output()
 	// Output:
@@ -19,7 +20,9 @@ func ExampleScriptFilter_OutputIndent() {
 	item1 := alfred.NewItem("Title1").Subtitle("Sub1").Arg("Arg1")
 	item2 := alfred.NewItem("Title2").Subtitle("Sub2").Arg("Arg2")
 
-	sf := alfred.NewScriptFilter().AppendItem(item1, item2).Variables(map[string]string{"key": "value"})
+	sf := alfred.NewScriptFilter()
+	sf.Items().Append(item1, item2)
+	sf.Variables().Put("key", "value")
 
 	_ = sf.OutputIndent("", "  ")
 	// Output:
@@ -93,7 +96,9 @@ func ExampleScriptFilter_OutputIndent_fullFields() {
 		Text("Text").
 		QuicklookURL("http://localhost")
 
-	sf := alfred.NewScriptFilter().AppendItem(item).Variables(map[string]string{"key": "value"})
+	sf := alfred.NewScriptFilter()
+	sf.Items().Append(item)
+	sf.Variables().Put("key", "value")
 
 	_ = sf.OutputIndent("", "  ")
 	// Output:

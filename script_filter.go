@@ -5,9 +5,15 @@ import (
 	"os"
 )
 
+type Variables map[string]string
+
+func (v *Variables) Put(key, value string) {
+	(*v)[key] = value
+}
+
 type ScriptFilter struct {
 	items     Items
-	variables map[string]string
+	variables Variables
 }
 
 func NewScriptFilter() *ScriptFilter {
@@ -17,14 +23,12 @@ func NewScriptFilter() *ScriptFilter {
 	}
 }
 
-func (sf *ScriptFilter) AppendItem(items ...*Item) *ScriptFilter {
-	sf.items.Append(items...)
-	return sf
+func (sf *ScriptFilter) Items() *Items {
+	return &sf.items
 }
 
-func (sf *ScriptFilter) Variables(v map[string]string) *ScriptFilter {
-	sf.variables = v
-	return sf
+func (sf *ScriptFilter) Variables() *Variables {
+	return &sf.variables
 }
 
 func (sf *ScriptFilter) MarshalJSON() ([]byte, error) {

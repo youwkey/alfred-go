@@ -11,20 +11,17 @@ func TestScriptFilter_MarshalJSON(t *testing.T) {
 
 	type Test struct {
 		in1 *ScriptFilter
-		in2 *ScriptFilter
 		out []byte
 	}
 
 	tests := []Test {
 		// Minimal
-		{ in1: &ScriptFilter{items: Items{}}, in2: NewScriptFilter(), out: []byte(`{"items":[]}`) },
+		{ in1: &ScriptFilter{items: Items{}}, out: []byte(`{"items":[]}`) },
 		// With item
 		{ in1: &ScriptFilter{items: Items{&Item{title: "title"}}},
-			in2: NewScriptFilter().AppendItem(NewItem("title")),
 			out: []byte(`{"items":[{"title":"title"}]}`) },
 		// With variables
 		{ in1: &ScriptFilter{items: Items{}, variables: map[string]string{"key": "value"}},
-			in2: NewScriptFilter().Variables(map[string]string{"key": "value"}),
 			out: []byte(`{"items":[],"variables":{"key":"value"}}`)},
 	}
 
@@ -38,13 +35,6 @@ func TestScriptFilter_MarshalJSON(t *testing.T) {
 			}
 			if !bytes.Equal(in1, test.out) {
 				t.Errorf("#%d: got: %s want: %s", i,  string(in1), string(test.out))
-			}
-			in2, err := test.in2.MarshalJSON()
-			if err != nil {
-				t.Errorf("#%d: marshal error: %v", i, err)
-			}
-			if !bytes.Equal(in2, test.out) {
-				t.Errorf("#%d: got: %s want: %s", i, string(in2), string(test.out))
 			}
 		})
 	}

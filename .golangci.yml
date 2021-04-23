@@ -1,0 +1,4 @@
+linters:
+  enable-all: true
+issues:
+  exclude-use-default: false

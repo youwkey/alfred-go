@@ -1,4 +1,8 @@
 linters:
   enable-all: true
+  disable:
+    - scopelint
+    - interfacer
+    - maligned
 issues:
   exclude-use-default: false

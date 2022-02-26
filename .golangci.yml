@@ -1,10 +1,11 @@
 linters:
   enable-all: true
   disable:
-    - scopelint
-    - interfacer
-    - maligned
-    - golint
+    - scopelint # deprecated
+    - interfacer # deprecated
+    - maligned # deprecated
+    - golint # deprecated
+    - exhaustivestruct
 linters-settings:
   varnamelen:
     min-name-length: 1

@@ -4,6 +4,7 @@
 
 package alfred
 
+// Items represents the Item slice and provides some utility methods.
 type Items []*Item
 
 // Length returns the length of the Items.

@@ -9,8 +9,10 @@ import (
 	"os"
 )
 
+// Variables describes a set of variables.
 type Variables map[string]string
 
+// Put sets the variable.
 func (v *Variables) Put(key, value string) {
 	(*v)[key] = value
 }

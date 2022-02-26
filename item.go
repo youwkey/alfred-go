@@ -8,8 +8,10 @@ import (
 	"encoding/json"
 )
 
+// IconType alias string.
 type IconType string
 
+// icon types.
 const (
 	IconTypeFileIcon IconType = "fileicon"
 	IconTypeFileType IconType = "filetype"
@@ -60,14 +62,17 @@ func (i *Icon) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v)
 }
 
+// ItemType type alias string.
 type ItemType string
 
+// item types.
 const (
 	ItemTypeDefault       ItemType = "default"
 	ItemTypeFile                   = "file"
 	ItemTypeFileSkipCheck          = "file:skipcheck"
 )
 
+// Modifier represents the state when modifier key is pressed.
 type Modifier struct {
 	subtitle  *string
 	arg       *string
@@ -138,7 +143,7 @@ type Modifiers struct {
 	cmd   *Modifier
 }
 
-// NewModifiers returns a new initialized Modifiers
+// NewModifiers returns a new initialized Modifiers.
 func NewModifiers() *Modifiers {
 	return new(Modifiers)
 }
@@ -257,8 +262,8 @@ func NewInvalidItem(title string) *Item {
 	}
 }
 
-// Uid sets the uid.
-func (i *Item) Uid(uid string) *Item {
+// UID sets the uid.
+func (i *Item) UID(uid string) *Item {
 	i.uid = &uid
 	return i
 }

@@ -10,6 +10,8 @@ import (
 )
 
 func TestIcons(t *testing.T) {
+	t.Parallel()
+
 	icons := []*Icon{
 		IconARDocument,
 		IconARObject,
@@ -168,7 +170,9 @@ func TestIcons(t *testing.T) {
 	}
 
 	for _, icon := range icons {
+		icon := icon
 		t.Run(icon.path, func(t *testing.T) {
+			t.Parallel()
 			if _, err := os.Stat(icon.path); err != nil {
 				t.Errorf("icon %v not exists", icon.path)
 			}

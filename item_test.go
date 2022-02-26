@@ -28,7 +28,9 @@ func pItemType(i ItemType) *ItemType {
 
 func testMarshalJSON(t *testing.T, n int, in interface{}, out string) {
 	t.Helper()
+
 	data, err := json.Marshal(in)
+
 	if err != nil {
 		t.Errorf("#%d: marshal error: %v", n, err)
 	} else if string(data) != out {
@@ -210,6 +212,7 @@ func TestItem_MarshalJSON(t *testing.T) {
 		in2 *Item
 		out string
 	}
+
 	tests := []marshalJSONTest{
 		// Minimal
 		{in1: &Item{title: "title"}, in2: NewItem("title"), out: `{"title":"title"}`},

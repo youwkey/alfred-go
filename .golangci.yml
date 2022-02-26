@@ -4,5 +4,6 @@ linters:
     - scopelint
     - interfacer
     - maligned
+    - golint
 issues:
   exclude-use-default: false

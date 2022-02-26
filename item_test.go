@@ -192,7 +192,7 @@ func TestItem_MarshalJSON(t *testing.T) {
 		{in1: &Item{title: "title"}, in2: NewItem("title"), out: `{"title":"title"}`},
 		// With uid
 		{in1: &Item{title: "title", uid: ps("uid")},
-			in2: NewItem("title").Uid("uid"),
+			in2: NewItem("title").UID("uid"),
 			out: `{"uid":"uid","title":"title"}`},
 		// With subtitle
 		{in1: &Item{title: "title", subtitle: ps("sub")},
@@ -221,7 +221,7 @@ func TestItem_MarshalJSON(t *testing.T) {
 		// With autocomplete
 		{in1: &Item{title: "title", autocomplete: ps("ac")},
 			in2: NewItem("title").Autocomplete("ac"),
-		out: `{"title":"title","autocomplete":"ac"}`},
+			out: `{"title":"title","autocomplete":"ac"}`},
 		// With typ default
 		{in1: &Item{title: "title", typ: pItemType("default")},
 			in2: NewItem("title").Type(ItemTypeDefault),

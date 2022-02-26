@@ -7,6 +7,7 @@ package alfred
 const systemIconDirPath = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/"
 
 // System icons.
+//nolint:gochecknoglobals // these constant icons
 var (
 	IconARDocument                 = &Icon{path: systemIconDirPath + "ARDocument.icns"}
 	IconARObject                   = &Icon{path: systemIconDirPath + "ARObject.icns"}

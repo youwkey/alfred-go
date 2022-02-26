@@ -37,6 +37,7 @@ func TestItems_Length(t *testing.T) {
 
 func TestItems_IsEmpty(t *testing.T) {
 	t.Parallel()
+
 	type Test struct {
 		in  Items
 		out bool

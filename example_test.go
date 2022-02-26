@@ -88,7 +88,7 @@ func ExampleScriptFilter_OutputIndent_fullFields() {
 		Cmd(cmd)
 
 	item := alfred.NewItem("Title1").
-		Uid("Uid").
+		UID("Uid").
 		Subtitle("Sub").
 		Arg("Arg").
 		Icon(alfred.NewIcon("./icon.png").Type(alfred.IconTypeFileType)).

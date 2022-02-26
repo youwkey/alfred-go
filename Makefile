@@ -1,6 +1,6 @@
 # Dependency tool versions
-GOTESTSUM_VERSION := 1.6.4
-GOLANGCLI_VERSION := 1.39.0
+GOTESTSUM_VERSION := 1.7.0
+GOLANGCLI_VERSION := 1.44.2
 
 BUILD_DIR := build
 

@@ -18,15 +18,19 @@ func TestScriptFilter_MarshalJSON(t *testing.T) {
 		out []byte
 	}
 
-	tests := []Test {
+	tests := []Test{
 		// Minimal
-		{ in1: &ScriptFilter{items: Items{}}, out: []byte(`{"items":[]}`) },
+		{in1: &ScriptFilter{items: Items{}}, out: []byte(`{"items":[]}`)},
 		// With item
-		{ in1: &ScriptFilter{items: Items{&Item{title: "title"}}},
-			out: []byte(`{"items":[{"title":"title"}]}`) },
+		{
+			in1: &ScriptFilter{items: Items{&Item{title: "title"}}},
+			out: []byte(`{"items":[{"title":"title"}]}`),
+		},
 		// With variables
-		{ in1: &ScriptFilter{items: Items{}, variables: map[string]string{"key": "value"}},
-			out: []byte(`{"items":[],"variables":{"key":"value"}}`)},
+		{
+			in1: &ScriptFilter{items: Items{}, variables: map[string]string{"key": "value"}},
+			out: []byte(`{"items":[],"variables":{"key":"value"}}`),
+		},
 	}
 
 	for i, test := range tests {
@@ -38,7 +42,7 @@ func TestScriptFilter_MarshalJSON(t *testing.T) {
 				t.Errorf("#%d: marshal error: %v", i, err)
 			}
 			if !bytes.Equal(in1, test.out) {
-				t.Errorf("#%d: got: %s want: %s", i,  string(in1), string(test.out))
+				t.Errorf("#%d: got: %s want: %s", i, string(in1), string(test.out))
 			}
 		})
 	}

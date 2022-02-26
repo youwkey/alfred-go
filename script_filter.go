@@ -6,6 +6,7 @@ package alfred
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 )
 
@@ -50,6 +51,7 @@ func (sf *ScriptFilter) MarshalJSON() ([]byte, error) {
 		Items:     sf.items,
 		Variables: sf.variables,
 	}
+
 	return json.Marshal(v)
 }
 
@@ -59,6 +61,7 @@ func (sf *ScriptFilter) Output() error {
 	if err != nil {
 		return err
 	}
+
 	return sf.output(bytes)
 }
 
@@ -68,13 +71,14 @@ func (sf *ScriptFilter) OutputIndent(prefix, indent string) error {
 	if err != nil {
 		return err
 	}
+
 	return sf.output(bytes)
 }
 
 func (sf *ScriptFilter) output(bytes []byte) error {
-	_, err := os.Stdout.Write(bytes)
-	if err != nil {
-		return err
+	if _, err := os.Stdout.Write(bytes); err != nil {
+		return fmt.Errorf("os stdout write: %w", err)
 	}
+
 	return nil
 }

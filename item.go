@@ -41,12 +41,14 @@ func NewIconWithType(path string, typ IconType) *Icon {
 // Path sets the path of the Item for Alfred results.
 func (i *Icon) Path(path string) *Icon {
 	i.path = path
+
 	return i
 }
 
 // Type sets the type of the Item for Alfred results.
 func (i *Icon) Type(typ IconType) *Icon {
 	i.typ = &typ
+
 	return i
 }
 
@@ -90,30 +92,35 @@ func NewModifier() *Modifier {
 // Subtitle sets the subtitle of the Item for Alfred results.
 func (m *Modifier) Subtitle(subtitle string) *Modifier {
 	m.subtitle = &subtitle
+
 	return m
 }
 
 // Arg sets the arg of the Item for Alfred results.
 func (m *Modifier) Arg(arg string) *Modifier {
 	m.arg = &arg
+
 	return m
 }
 
 // Icon sets the icon of the Item for Alfred results.
 func (m *Modifier) Icon(icon *Icon) *Modifier {
 	m.icon = icon
+
 	return m
 }
 
 // Valid sets valid of the Item for Alfred results.
 func (m *Modifier) Valid(valid bool) *Modifier {
 	m.valid = &valid
+
 	return m
 }
 
 // Variables sets the variables of the Item for Alfred results.
 func (m *Modifier) Variables(variables map[string]string) *Modifier {
 	m.variables = variables
+
 	return m
 }
 
@@ -218,12 +225,14 @@ func NewText() *Text {
 // CopyText sets the text.
 func (t *Text) CopyText(text string) *Text {
 	t.copy = &text
+
 	return t
 }
 
 // LargeText sets the large text.
 func (t *Text) LargeText(text string) *Text {
 	t.largeType = &text
+
 	return t
 }
 
@@ -426,6 +435,7 @@ func (i *Item) Text(text string) *Item {
 // QuicklookURL sets the quick look url.
 func (i *Item) QuicklookURL(url string) *Item {
 	i.quicklookURL = &url
+
 	return i
 }
 

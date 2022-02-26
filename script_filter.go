@@ -75,8 +75,7 @@ func (sf *ScriptFilter) OutputIndent(prefix, indent string) error {
 }
 
 func (sf *ScriptFilter) output(bytes []byte) error {
-	_, err := os.Stdout.Write(bytes)
-	if err != nil {
+	if _, err := os.Stdout.Write(bytes); err != nil {
 		return err
 	}
 

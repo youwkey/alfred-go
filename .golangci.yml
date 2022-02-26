@@ -10,6 +10,10 @@ linters:
 linters-settings:
   varnamelen:
     min-name-length: 1
+  wrapcheck:
+    ignoreSigRegexps:
+      - \.New.*Error\( # default
+      - json\.Marshal.*\( # ignore json.Marshal or json.MarshalIndent
 issues:
   exclude-use-default: false
   exclude-rules:

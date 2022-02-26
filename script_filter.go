@@ -6,6 +6,7 @@ package alfred
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 )
 
@@ -76,7 +77,7 @@ func (sf *ScriptFilter) OutputIndent(prefix, indent string) error {
 
 func (sf *ScriptFilter) output(bytes []byte) error {
 	if _, err := os.Stdout.Write(bytes); err != nil {
-		return err
+		return fmt.Errorf("os stdout write: %w", err)
 	}
 
 	return nil

@@ -6,6 +6,7 @@ linters:
     - maligned # deprecated
     - golint # deprecated
     - exhaustivestruct
+    - paralleltest
 linters-settings:
   varnamelen:
     min-name-length: 1

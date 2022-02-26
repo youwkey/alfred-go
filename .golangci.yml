@@ -5,6 +5,9 @@ linters:
     - interfacer
     - maligned
     - golint
+linters-settings:
+  varnamelen:
+    min-name-length: 1
 issues:
   exclude-use-default: false
   exclude-rules:

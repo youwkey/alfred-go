@@ -71,8 +71,8 @@ type ItemType string
 // item types.
 const (
 	ItemTypeDefault       ItemType = "default"
-	ItemTypeFile                   = "file"
-	ItemTypeFileSkipCheck          = "file:skipcheck"
+	ItemTypeFile          ItemType = "file"
+	ItemTypeFileSkipCheck ItemType = "file:skipcheck"
 )
 
 // Modifier represents the state when modifier key is pressed.

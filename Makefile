@@ -4,9 +4,9 @@ GOLANGCLI_VERSION := 1.44.2
 
 BUILD_DIR := build
 
-.PHONY: check test lint check-goreleaser clean tools
+.PHONY: check test lint clean tools
 
-check: test lint check-goreleaser
+check: test lint
 
 test:
 	@mkdir -p $(BUILD_DIR)
@@ -15,9 +15,6 @@ test:
 
 lint:
 	golangci-lint run
-
-check-goreleaser:
-	goreleaser check
 
 clean:
 	rm -rf $(BUILD_DIR)

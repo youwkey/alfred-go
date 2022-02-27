@@ -173,6 +173,10 @@ func TestIcons(t *testing.T) {
 		icon := icon
 		t.Run(icon.path, func(t *testing.T) {
 			t.Parallel()
+			// skip for CI(on Linux)
+			if os.Getenv("CI") == "true" {
+				return
+			}
 			if _, err := os.Stat(icon.path); err != nil {
 				t.Errorf("icon %v not exists", icon.path)
 			}

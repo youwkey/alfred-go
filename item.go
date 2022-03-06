@@ -211,6 +211,64 @@ func (m *Modifiers) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v)
 }
 
+// Action represents the item used when universal action.
+type Action struct {
+	text []string
+	url  *string
+	file *string
+	auto *string
+}
+
+// NewAction returns an Action.
+func NewAction() *Action {
+	return new(Action)
+}
+
+// Text sets texts for Action.
+func (ac *Action) Text(texts ...string) *Action {
+	ac.text = append(ac.text, texts...)
+
+	return ac
+}
+
+// URL sets texts for Action.
+func (ac *Action) URL(url string) *Action {
+	ac.url = &url
+
+	return ac
+}
+
+// File sets texts for Action.
+func (ac *Action) File(file string) *Action {
+	ac.file = &file
+
+	return ac
+}
+
+// Auto sets texts for Action.
+func (ac *Action) Auto(auto string) *Action {
+	ac.auto = &auto
+
+	return ac
+}
+
+// MarshalJSON implements the json.Marshaler interface.
+func (ac Action) MarshalJSON() ([]byte, error) {
+	v := &struct {
+		Text []string `json:"text,omitempty"`
+		URL  *string  `json:"url,omitempty"`
+		File *string  `json:"file,omitempty"`
+		Auto *string  `json:"auto,omitempty"`
+	}{
+		Text: ac.text,
+		URL:  ac.url,
+		File: ac.file,
+		Auto: ac.auto,
+	}
+
+	return json.Marshal(v)
+}
+
 // Text represents the result text.
 type Text struct {
 	copy      *string
@@ -261,6 +319,7 @@ type Item struct {
 	autocomplete *string
 	typ          *ItemType
 	mods         *Modifiers
+	action       *Action
 	text         *Text
 	quicklookURL *string
 }
@@ -452,6 +511,7 @@ func (i *Item) MarshalJSON() ([]byte, error) {
 		Autocomplete *string    `json:"autocomplete,omitempty"`
 		Type         *ItemType  `json:"type,omitempty"`
 		Mods         *Modifiers `json:"mods,omitempty"`
+		Action       *Action    `json:"action,omitempty"`
 		Text         *Text      `json:"text,omitempty"`
 		QuicklookURL *string    `json:"quicklookurl,omitempty"`
 	}{
@@ -465,6 +525,7 @@ func (i *Item) MarshalJSON() ([]byte, error) {
 		Autocomplete: i.autocomplete,
 		Type:         i.typ,
 		Mods:         i.mods,
+		Action:       i.action,
 		Text:         i.text,
 		QuicklookURL: i.quicklookURL,
 	}

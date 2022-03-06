@@ -172,6 +172,63 @@ func TestModifiers_MarshalJSON(t *testing.T) {
 	}
 }
 
+func TestAction_MarshalJSON(t *testing.T) {
+	t.Parallel()
+
+	type marshalJSONTest struct {
+		in1 *Action
+		in2 *Action
+		out string
+	}
+
+	tests := []marshalJSONTest{
+		// With text
+		{
+			in1: &Action{text: []string{"text"}},
+			in2: NewAction().Text("text"),
+			out: `{"text":["text"]}`,
+		},
+		// With url
+		{
+			in1: &Action{url: ps("url")},
+			in2: NewAction().URL("url"),
+			out: `{"url":"url"}`,
+		},
+		// With file
+		{
+			in1: &Action{file: ps("file")},
+			in2: NewAction().File("file"),
+			out: `{"file":"file"}`,
+		},
+		// With auto
+		{
+			in1: &Action{auto: ps("auto")},
+			in2: NewAction().Auto("auto"),
+			out: `{"auto":"auto"}`,
+		},
+		// With all
+		{
+			in1: &Action{
+				text: []string{"text1", "text2", "text3"},
+				url:  ps("url"),
+				file: ps("file"),
+				auto: ps("auto"),
+			},
+			in2: NewAction().Text("text1", "text2", "text3").URL("url").File("file").Auto("auto"),
+			out: `{"text":["text1","text2","text3"],"url":"url","file":"file","auto":"auto"}`,
+		},
+	}
+
+	for i, test := range tests {
+		i, test := i, test
+		t.Run(fmt.Sprintf("#%d:MarshalAction", i), func(t *testing.T) {
+			t.Parallel()
+			testMarshalJSON(t, i, test.in1, test.out)
+			testMarshalJSON(t, i, test.in2, test.out)
+		})
+	}
+}
+
 func TestText_MarshalJSON(t *testing.T) {
 	t.Parallel()
 

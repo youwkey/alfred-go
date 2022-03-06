@@ -81,7 +81,7 @@ type Modifier struct {
 	arg       *string
 	icon      *Icon
 	valid     *bool
-	variables map[string]string
+	variables map[string]interface{}
 }
 
 // NewModifier returns a Modifier.
@@ -118,7 +118,7 @@ func (m *Modifier) Valid(valid bool) *Modifier {
 }
 
 // Variables sets the variables of the Item for Alfred results.
-func (m *Modifier) Variables(variables map[string]string) *Modifier {
+func (m *Modifier) Variables(variables map[string]interface{}) *Modifier {
 	m.variables = variables
 
 	return m
@@ -127,11 +127,11 @@ func (m *Modifier) Variables(variables map[string]string) *Modifier {
 // MarshalJSON implements the json.Marshaler interface.
 func (m *Modifier) MarshalJSON() ([]byte, error) {
 	v := &struct {
-		Subtitle  *string           `json:"subtitle,omitempty"`
-		Arg       *string           `json:"arg,omitempty"`
-		Icon      *Icon             `json:"icon,omitempty"`
-		Valid     *bool             `json:"valid,omitempty"`
-		Variables map[string]string `json:"variables,omitempty"`
+		Subtitle  *string                `json:"subtitle,omitempty"`
+		Arg       *string                `json:"arg,omitempty"`
+		Icon      *Icon                  `json:"icon,omitempty"`
+		Valid     *bool                  `json:"valid,omitempty"`
+		Variables map[string]interface{} `json:"variables,omitempty"`
 	}{
 		Subtitle:  m.subtitle,
 		Arg:       m.arg,

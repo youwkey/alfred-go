@@ -26,10 +26,10 @@ func TestScriptFilter_MarshalJSON(t *testing.T) {
 			in1: &ScriptFilter{items: Items{&Item{title: "title"}}},
 			out: []byte(`{"items":[{"title":"title"}]}`),
 		},
-		// With variables
+		// With variables(string)
 		{
-			in1: &ScriptFilter{items: Items{}, variables: map[string]string{"key": "value"}},
-			out: []byte(`{"items":[],"variables":{"key":"value"}}`),
+			in1: &ScriptFilter{items: Items{}, variables: map[string]interface{}{"bool": true, "number": 1, "string": "value"}},
+			out: []byte(`{"items":[],"variables":{"bool":true,"number":1,"string":"value"}}`),
 		},
 	}
 

@@ -104,9 +104,9 @@ func TestModifier_MarshalJSON(t *testing.T) {
 		{in1: &Modifier{valid: pb(false)}, in2: NewModifier().Valid(false), out: `{"valid":false}`},
 		// Set variables
 		{
-			in1: &Modifier{variables: map[string]string{"key": "value"}},
-			in2: NewModifier().Variables(map[string]string{"key": "value"}),
-			out: `{"variables":{"key":"value"}}`,
+			in1: &Modifier{variables: map[string]interface{}{"bool": true, "number": 1, "string": "value"}},
+			in2: NewModifier().Variables(map[string]interface{}{"bool": true, "number": 1, "string": "value"}),
+			out: `{"variables":{"bool":true,"number":1,"string":"value"}}`,
 		},
 	}
 

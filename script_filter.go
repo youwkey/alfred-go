@@ -11,10 +11,10 @@ import (
 )
 
 // Variables describes a set of variables.
-type Variables map[string]string
+type Variables map[string]interface{}
 
 // Put sets the variable.
-func (v *Variables) Put(key, value string) {
+func (v *Variables) Put(key string, value interface{}) {
 	(*v)[key] = value
 }
 
@@ -28,7 +28,7 @@ type ScriptFilter struct {
 func NewScriptFilter() *ScriptFilter {
 	return &ScriptFilter{
 		items:     make(Items, 0),
-		variables: make(map[string]string),
+		variables: make(map[string]interface{}),
 	}
 }
 
@@ -45,8 +45,8 @@ func (sf *ScriptFilter) Variables() *Variables {
 // MarshalJSON implements the json.Marshaler interface.
 func (sf *ScriptFilter) MarshalJSON() ([]byte, error) {
 	v := &struct {
-		Items     Items             `json:"items"`
-		Variables map[string]string `json:"variables,omitempty"`
+		Items     Items                  `json:"items"`
+		Variables map[string]interface{} `json:"variables,omitempty"`
 	}{
 		Items:     sf.items,
 		Variables: sf.variables,

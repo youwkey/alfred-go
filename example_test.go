@@ -55,31 +55,31 @@ func ExampleScriptFilter_OutputIndent_fullFields() {
 		Arg("ShiftArg").
 		Icon(alfred.NewIcon("./shift.png").Type(alfred.IconTypeFileIcon)).
 		Valid(true).
-		Variables(map[string]string{"key": "shift"})
+		Variables(map[string]interface{}{"key": "shift"})
 	fn := alfred.NewModifier().
 		Subtitle("Fn").
 		Arg("FnArg").
 		Icon(alfred.NewIcon("./fn.png").Type(alfred.IconTypeFileIcon)).
 		Valid(true).
-		Variables(map[string]string{"key": "fn"})
+		Variables(map[string]interface{}{"key": "fn"})
 	ctrl := alfred.NewModifier().
 		Subtitle("Ctrl").
 		Arg("CtrlArg").
 		Icon(alfred.NewIcon("./ctrl.png").Type(alfred.IconTypeFileIcon)).
 		Valid(true).
-		Variables(map[string]string{"key": "ctrl"})
+		Variables(map[string]interface{}{"key": "ctrl"})
 	alt := alfred.NewModifier().
 		Subtitle("Alt").
 		Arg("AltArg").
 		Icon(alfred.NewIcon("./alt.png").Type(alfred.IconTypeFileIcon)).
 		Valid(true).
-		Variables(map[string]string{"key": "alt"})
+		Variables(map[string]interface{}{"key": "alt"})
 	cmd := alfred.NewModifier().
 		Subtitle("Cmd").
 		Arg("CmdArg").
 		Icon(alfred.NewIcon("./cmd.png").Type(alfred.IconTypeFileIcon)).
 		Valid(true).
-		Variables(map[string]string{"key": "cmd"})
+		Variables(map[string]interface{}{"key": "cmd"})
 	mods := alfred.NewModifiers().
 		Shift(shift).
 		Fn(fn).
